@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개인 포트폴리오 | 홈페이지</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --border: #334155;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* 네비게이션 */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background-color: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    [data-theme="light"] nav {
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+    }
+
+    /* 레이아웃 컨테이너 */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    section {
+      margin-bottom: 5rem;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      color: var(--text-sub);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #0f172a;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      color: #ffffff;
+    }
+
+    /* 섹션 공통 타이틀 */
+    .section-title {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* 기술 스택 그리드 */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .skill-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+    }
+
+    .skill-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .skill-card p {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    /* 프로젝트 그리드 */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .project-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--primary);
+      border-radius: 4px;
+    }
+
+    /* 문의 양식 */
+    .contact-form {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 1rem auto 0;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* 푸터 */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+    }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 네비게이션 -->
+  <nav>
+    <a href="#" class="nav-logo">MyPortfolio</a>
+    <ul class="nav-links">
+      <li><a href="#about">소개</a></li>
+      <li><a href="#skills">기술 스택</a></li>
+      <li><a href="#projects">프로젝트</a></li>
+      <li><a href="#contact">문의하기</a></li>
+    </ul>
+    <button id="themeBtn" class="theme-toggle">다크 모드 전환</button>
+  </nav>
+
+  <div class="container">
+    <!-- 히어로 섹션 -->
+    <section class="hero" id="about">
+      <span class="hero-badge">Welcome</span>
+      <h1 id="heroTitle">기술과 경험을 기록하는 공간</h1>
+      <p>보안, 인프라, 시스템 설계 등 다양한 실무 경험을 바탕으로 탄탄하고 안정적인 솔루션을 구축합니다.</p>
+      <a href="#contact" class="btn btn-primary">연락하기</a>
+    </section>
+
+    <!-- 기술 스택 -->
+    <section id="skills">
+      <h2 class="section-title">주요 역량</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>보안 및 인프라</h3>
+          <p>DLP, IPS 등 네트워크/시스템 보안 운영 및 산업기술 보호 표준 체계 관리</p>
+        </div>
+        <div class="skill-card">
+          <h3>시스템 구축</h3>
+          <p>출입 보안 및 인프라 설계, 안정적인 운영 프로세스 및 현장 모니터링</p>
+        </div>
+        <div class="skill-card">
+          <h3>자동화 & 스크립팅</h3>
+          <p>업무 효율화를 위한 자동화 도구 개발 및 커스텀 워크플로우 구성</p>
+        </div>
+        <div class="skill-card">
+          <h3>프로젝트 관리</h3>
+          <p>다양한 이해관계자와의 협업, 요구사항 분석 및 일정 관리</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 프로젝트 -->
+    <section id="projects">
+      <h2 class="section-title">프로젝트</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div>
+            <h3>인프라 통합 보안 시스템 구축</h3>
+            <p>보안 규정 준수 및 통합 모니터링 체계를 확립하여 사내 주요 정보 유출 방지 및 접근 권한 제어 효율화</p>
+          </div>
+          <div>
+            <div class="tag-container">
+              <span class="tag">Security</span>
+              <span class="tag">Network</span>
+              <span class="tag">Compliance</span>
+            </div>
+            <button class="btn btn-primary" onclick="alert('프로젝트 상세 정보를 연결할 수 있습니다.')">상세보기</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div>
+            <h3>업무 자동화 & 데이터 관리 툴</h3>
+            <p>반복적인 점검 및 데이터 집계 작업을 줄이기 위한 경량 GUI 도구 및 파이프라인 개발</p>
+          </div>
+          <div>
+            <div class="tag-container">
+              <span class="tag">Automation</span>
+              <span class="tag">Python</span>
+              <span class="tag">Efficiency</span>
+            </div>
+            <button class="btn btn-primary" onclick="alert('프로젝트 상세 정보를 연결할 수 있습니다.')">상세보기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 문의하기 -->
+    <section id="contact">
+      <h2 class="section-title">문의하기</h2>
+      <form class="contact-form" id="contactForm">
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" required placeholder="홍길동">
+        </div>
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input type="email" id="email" required placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label for="message">메시지</label>
+          <textarea id="message" rows="4" required placeholder="남기실 내용을 입력해 주세요."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">보내기</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    <p>&copy; 2026 Personal Portfolio. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 다크 / 라이트 모드 토글
+    const themeBtn = document.getElementById('themeBtn');
+    const root = document.documentElement;
+
+    // 로컬 스토리지 확인
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    root.setAttribute('data-theme', savedTheme);
+    updateButtonText(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = root.getAttribute('data-theme');
+      const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('theme', nextTheme);
+      updateButtonText(nextTheme);
+    });
+
+    function updateButtonText(theme) {
+      themeBtn.textContent = theme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+    }
+
+    // 폼 제출 이벤트
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      alert(`${name}님, 메시지가 성공적으로 접수되었습니다!`);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
